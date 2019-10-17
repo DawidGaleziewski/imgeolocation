@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Document</title>
+</head>
+<body>
+    <form id="upload-file" class="upload-file">
+        <label for="upload-file__image">Upload image with EXIF</label>
+        <input id="upload-file__image" class="upload-file__image" type="file">
+        <input type="submit">
+      </form>
+      <section id="upload-preview">
+              <img id="img-output" src="" alt="">
+      </section>
+  
+  
+      <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+      <script src="index.js"></script>
+</body>
+</html>
