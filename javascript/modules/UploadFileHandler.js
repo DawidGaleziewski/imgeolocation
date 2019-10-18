@@ -1,48 +1,17 @@
-//Module getting the geolocation of the image
-    //Function returning image geolocation
-    const ImageGeolocationHandler = function(imgHTMLElement, callback){
-        console.log('start')
-        //Helper function returning longitude and latitude as a float
-        const toDecimal = function (number) {
-            return number[0].numerator + number[1].numerator /
-                (60 * number[1].denominator) + number[2].numerator / (3600 * number[2].denominator);
-        };
-    
-        //function accepting the image and callback returning the data
-        EXIF.getData(imgHTMLElement, function(){
-
-            let longitude = toDecimal(EXIF.getTag(this,'GPSLongitude'));
-            let latitude = toDecimal(EXIF.getTag(this, 'GPSLatitude')); 
-            
-            const longLat = {
-                longitude: longitude,
-                latitude: latitude
-            }   
-            
-            console.log(longLat)
-            callback(longLat)
-        })
-    }
-
 //Modeule handling image upload and getting all information
-const UploadFileHandler = (function(){
+import ImageGeolocationHandler from './ImageGeolocationHandler';
 
-
-
-    function singleImageTemplate(fileObject){
+const UploadFileHandler = (function(ImageGeolocationHandler){
+    
+    function singleImageTemplate(fileObject){             
         //Create DOM elements
         const pictureInfoList = document.createElement('ul');
             const imageMiniature = document.createElement('img');
             const fileName = document.createElement('li');
             const fileExtension = document.createElement('li');
             const fileSize = document.createElement('li');
+            let fileGeoLocation = document.createElement('li');
             const removeButton = document.createElement('li');
-
-                ImageGeolocationHandler(imageMiniature, function(longLat){
-                    console.log(longLat);
-                })
-
-
 
         //Update DOM elements with data
         imageMiniature.src = URL.createObjectURL(fileObject);
@@ -50,12 +19,21 @@ const UploadFileHandler = (function(){
         fileExtension.innerText = fileObject.type;
         fileSize.innerText = fileObject.size;
         removeButton.innerText = 'remove item';
+            removeButton.classList.add('btn-remove')
+        
+        imageMiniature.onload = function(){
+            ImageGeolocationHandler.returnLongLat(imageMiniature, function(longLat){
+                console.log(longLat.longitude)
+                fileGeoLocation.innerText = `Picture was taken on longitude: ${longLat.longitude}, and latitude: ${longLat.latitude}`
+            })
+        }
 
         //Update the parent list
         pictureInfoList.appendChild(imageMiniature);
         pictureInfoList.appendChild(fileName);
         pictureInfoList.appendChild(fileExtension);
         pictureInfoList.appendChild(fileSize);
+        pictureInfoList.appendChild(fileGeoLocation);
         pictureInfoList.appendChild(removeButton);
 
         return pictureInfoList;
@@ -71,24 +49,22 @@ const UploadFileHandler = (function(){
             })
         })
     }
+
+    function removeImageHandler(imagesContainer){
+        imagesContainer.addEventListener('click', function(event){
+            console.log(event.target.className)
+            if(event.target.className === "btn-remove"){
+                event.target.parentElement.remove()
+            }
+        })
+    }
     
     return{
-        UploadImage: imageUploadHandler
+        uploadImage: imageUploadHandler,
+        removeImage: removeImageHandler,
+        singleImageTemplate: singleImageTemplate
     }
-})()
+})(ImageGeolocationHandler)
 
 
-const UIinput = document.querySelector('#upload-file__image');
-const UIoutput = document.querySelector('#upload-preview');
-UploadFileHandler.UploadImage(UIinput, UIoutput);
-
-
-
-
-
-
-const img1 = document.querySelector('img');
-// ImageGeolocationHandler.getLongAndLat(img1, function(longLat){
-//     console.log(longLat)
-// })
-
+export default UploadFileHandler;

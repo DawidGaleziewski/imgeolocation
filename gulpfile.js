@@ -21,8 +21,6 @@
     const uglify = require('gulp-uglify');
     const rename = require("gulp-rename");
 
-    // images
-    const imagemin = require('gulp-imagemin')
 
 // compile scss into css
 function style(){
@@ -71,44 +69,25 @@ function javascript(done){
     done()
 }
 
-// minify images
-function images(done){
-    return gulp.src('./app/img/*')
-    .pipe(imagemin([
-        imagemin.gifsicle({interlaced: true}),
-        imagemin.jpegtran({progressive: true}),
-        imagemin.optipng({optimizationLevel: 5}),
-        imagemin.svgo({
-            plugins: [
-                {removeViewBox: true},
-                {cleanupIDs: false}
-            ]
-        })
-    ]))
-    .pipe(gulp.dest('./app/img-min'))
-}
-
 // watcher
 function watch(){
     // specify server to run
     browserSync.init({
         server: {
             // server directory
-            baseDir:'./app/'
+            baseDir:'./'
         }
     });
 
     // Watch for any changes on scss files
         // run style task to complie any changes
-    gulp.watch('app/scss/**/*.scss', style);
+    // gulp.watch('./scss/**/*.scss', style);
 
     // Watch for any changes in index files, reload browser on those changes
-    gulp.watch('./app/*.html').on('change', browserSync.reload);
+    // gulp.watch('./*.html').on('change', browserSync.reload);
 
     // Watch for pre-javaScript changes, apply changes to the files on save
-    gulp.watch('app/pre-js/**/*.js', javascript).on('change', browserSync.reload);
-
-    gulp.watch('./app/img/*', images);
+    gulp.watch('./javascript/**/*.js', javascript).on('change', browserSync.reload);
 
 }
 
@@ -116,5 +95,4 @@ function watch(){
 // export tasks
 exports.style = style
 exports.javascript = javascript
-exports.images = images
 exports.watch = watch
