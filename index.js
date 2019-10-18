@@ -1,4 +1,33 @@
+//Module getting the geolocation of the image
+    //Function returning image geolocation
+    const ImageGeolocationHandler = function(imgHTMLElement, callback){
+        console.log('start')
+        //Helper function returning longitude and latitude as a float
+        const toDecimal = function (number) {
+            return number[0].numerator + number[1].numerator /
+                (60 * number[1].denominator) + number[2].numerator / (3600 * number[2].denominator);
+        };
+    
+        //function accepting the image and callback returning the data
+        EXIF.getData(imgHTMLElement, function(){
+
+            let longitude = toDecimal(EXIF.getTag(this,'GPSLongitude'));
+            let latitude = toDecimal(EXIF.getTag(this, 'GPSLatitude')); 
+            
+            const longLat = {
+                longitude: longitude,
+                latitude: latitude
+            }   
+            
+            console.log(longLat)
+            callback(longLat)
+        })
+    }
+
+//Modeule handling image upload and getting all information
 const UploadFileHandler = (function(){
+
+
 
     function singleImageTemplate(fileObject){
         //Create DOM elements
@@ -9,7 +38,11 @@ const UploadFileHandler = (function(){
             const fileSize = document.createElement('li');
             const removeButton = document.createElement('li');
 
-            
+                ImageGeolocationHandler(imageMiniature, function(longLat){
+                    console.log(longLat);
+                })
+
+
 
         //Update DOM elements with data
         imageMiniature.src = URL.createObjectURL(fileObject);
@@ -24,11 +57,6 @@ const UploadFileHandler = (function(){
         pictureInfoList.appendChild(fileExtension);
         pictureInfoList.appendChild(fileSize);
         pictureInfoList.appendChild(removeButton);
-
-        EXIF.getData(imageMiniature, function(){
-            
-            console.log( EXIF.getAllTags(this))
-        })
 
         return pictureInfoList;
     }
@@ -55,29 +83,12 @@ const UIoutput = document.querySelector('#upload-preview');
 UploadFileHandler.UploadImage(UIinput, UIoutput);
 
 
-//Testing exif
-    //To do refactor below and extract to own module
 
 
-var img1 = document.querySelector('.test-img')
 
 
-var toDecimal = function (number) {
-    return number[0].numerator + number[1].numerator /
-        (60 * number[1].denominator) + number[2].numerator / (3600 * number[2].denominator);
-};
+const img1 = document.querySelector('img');
+// ImageGeolocationHandler.getLongAndLat(img1, function(longLat){
+//     console.log(longLat)
+// })
 
-function getExif() {
-    EXIF.getData(img1, function() {
-        var allMetaData = EXIF.getAllTags(this);
-        var allMetaDataSpan = document.getElementById("allMetaDataSpan");
-
-        var longitude = EXIF.getTag(this, 'GPSLongitude');
-        var latitude = EXIF.getTag(this, 'GPSLatitude')
-
-        console.log(toDecimal(longitude), toDecimal(latitude))
-        // allMetaDataSpan.innerHTML = JSON.stringify(allMetaData, null, "\t");
-    });
-}
-
-img1.addEventListener('click', getExif)
