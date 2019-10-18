@@ -1,12 +1,14 @@
 //Modeule handling image upload and getting all information
 import ImageGeolocationHandler from './ImageGeolocationHandler';
+import ValidateHandler from './ValidateHandler';
 
 const UploadFileHandler = (function(ImageGeolocationHandler){
     
     function singleImageTemplate(fileObject){             
         //Create DOM elements
         const pictureInfoList = document.createElement('ul');
-            const imageMiniature = document.createElement('img');
+            const imageMiniature = document.createElement('li');
+            const image = document.createElement('img');
             const fileName = document.createElement('li');
             const fileExtension = document.createElement('li');
             const fileSize = document.createElement('li');
@@ -14,16 +16,16 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
             const removeButton = document.createElement('li');
 
         //Update DOM elements with data
-        imageMiniature.src = URL.createObjectURL(fileObject);
-        fileName.innerText = fileObject.name;
-        fileExtension.innerText = fileObject.type;
-        fileSize.innerText = fileObject.size;
+        image.src = URL.createObjectURL(fileObject);
+        imageMiniature.appendChild(image);
+        fileName.innerText = `File name: ${fileObject.name}`;
+        fileExtension.innerText = `File extension: ${fileObject.type}`;
+        fileSize.innerText = `File size: ${fileObject.size}`;
         removeButton.innerText = 'remove item';
             removeButton.classList.add('btn-remove')
         
-        imageMiniature.onload = function(){
-            ImageGeolocationHandler.returnLongLat(imageMiniature, function(longLat){
-                console.log(longLat.longitude)
+        image.onload = function(){
+            ImageGeolocationHandler.returnLongLat(image, function(longLat){
                 fileGeoLocation.innerText = `Picture was taken on longitude: ${longLat.longitude}, and latitude: ${longLat.latitude}`
             })
         }
@@ -44,7 +46,8 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
         fileInput.addEventListener('change', function(event){
             const fileInput = Array.from(event.target.files); 
             fileInput.forEach(function(file){
-                //Create single uploaded image and add metadata    
+                ValidateHandler.validateGPSData(file)
+                //Create single uploaded image and add metadata  
                 outputContainer.appendChild(singleImageTemplate(file));
             })
         })
@@ -52,7 +55,6 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
 
     function removeImageHandler(imagesContainer){
         imagesContainer.addEventListener('click', function(event){
-            console.log(event.target.className)
             if(event.target.className === "btn-remove"){
                 event.target.parentElement.remove()
             }
