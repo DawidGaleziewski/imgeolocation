@@ -49,11 +49,11 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
             fileInput.forEach(function(file){
                 ValidateHandler.validateImage(file, function(errors){
                     console.log(errors)
-                    if(errors.hasGPSData && errors.goodFileSize && errors.validFileExtension){
+                    if(errors.hasGPSData.isCorrect && errors.goodFileSize.isCorrect && errors.validFileExtension.isCorrect){
                         //Create single uploaded image and add metadata  
                         outputContainer.appendChild(singleImageTemplate(file));
                     } else {
-                        console.log('not all good')
+                        AlertHandler.displayError(errors, document.querySelector('body'), 3000)
                     }
                 })
             })

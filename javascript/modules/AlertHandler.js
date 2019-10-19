@@ -1,22 +1,28 @@
 const AlertHandler = (function(){
+    function displayError(errors, UIoutput, errorDurationTime){
+        //Convert errors to array of error messages
+        const errorMessages= Object.keys(errors).filter(function(key){
+            return errors[key].isCorrect === false
+        }).map(function(key){
+            return errors[key].description
+        })
 
-    function displayError(message, UIoutput, errorDurationTime){
-        const errorTemplate = document.createElement('p');
+        errorMessages.forEach(function(errorMessage){
+            const errorTemplate = document.createElement('p');
             errorTemplate.classList.add('error-popup');
-            errorTemplate.innerText = `Error: ${message}`;
+            errorTemplate.innerText = `Error: ${errorMessage}`;
 
-        UIoutput.prepend(errorTemplate);
+            UIoutput.prepend(errorTemplate);
+            setTimeout(function(){
+                UIoutput.removeChild(errorTemplate)
+            }, errorDurationTime) 
+        }) 
 
-        setTimeout(function(){
-            UIoutput.removeChild(errorTemplate)
-        }, errorDurationTime) 
     }
 
     return{
         displayError: displayError
     }
 })();
-
-AlertHandler.displayError('Not enough swagg!', document.querySelector('body'), 3000)
 
 export default AlertHandler

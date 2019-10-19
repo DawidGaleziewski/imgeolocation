@@ -20,18 +20,26 @@ const ValidateHandler = (function(){
     //Validate image and return a object with checks in the callback
     const validateImage = function(image, callback){
         const errors = {
-            hasGPSData:  false,
-            goodFileSize: false,
-            validFileExtension: false
+            hasGPSData: {
+                isCorrect:false,
+                description: 'Image uploaded does not have EXIF metadata on geolocation'
+            },
+            goodFileSize: {
+                isCorrect: false,
+                description: 'Image uploaded is to big'
+            }, 
+            validFileExtension: {
+                isCorrect: false,
+                description: 'Bad file format'
+            }
         }
 
         _validateGPSData(image, function(gpsIsValid){
-            errors.hasGPSData = gpsIsValid;
-            errors.goodFileSize = _validateFileSize(image.size, 1000);
-            errors.validFileExtension = _validateFileExtension(image.type, ["image/jpeg"])
+            errors.hasGPSData.isCorrect = gpsIsValid;
+            errors.goodFileSize.isCorrect = _validateFileSize(image.size, 1000);
+            errors.validFileExtension.isCorrect = _validateFileExtension(image.type, ["image/jpeg"])
             callback(errors)
         })
-
 
     }
 
