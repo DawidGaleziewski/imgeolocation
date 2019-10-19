@@ -81,10 +81,10 @@ function watch(){
 
     // Watch for any changes on scss files
         // run style task to complie any changes
-    // gulp.watch('./scss/**/*.scss', style);
+    gulp.watch('./scss/**/*.scss', style);
 
     // Watch for any changes in index files, reload browser on those changes
-    // gulp.watch('./*.html').on('change', browserSync.reload);
+    gulp.watch('./*.html').on('change', browserSync.reload);
 
     // Watch for pre-javaScript changes, apply changes to the files on save
     gulp.watch('./javascript/**/*.js', javascript).on('change', browserSync.reload);
