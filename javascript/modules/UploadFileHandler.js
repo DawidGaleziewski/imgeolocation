@@ -5,12 +5,21 @@ import AlertHandler from './AlertHandler';
 
 const UploadFileHandler = (function(ImageGeolocationHandler){
     
-    function singleImageTemplate(fileObject){             
-        //Create DOM elements
+    function singleImageTemplate(fileObject){ 
+        //Materializecss DOM elements
+        const cardDiv = document.createElement('div');
+            cardDiv.classList.add('card');
+        const cardImageDiv = document.createElement('div');
+            cardImageDiv.classList.add('card-image');
+        const cardTitleSpan = document.createElement('span');
+            cardTitleSpan.classList.add('card-title');
+        const cardContent = document.createElement('div');
+            cardContent.classList.add('card-content');
+
+        //Create DOM elements with data
         const pictureInfoList = document.createElement('ul');
-            const imageMiniature = document.createElement('li');
+            // const imageMiniature = document.createElement('li');
             const image = document.createElement('img');
-            const fileName = document.createElement('li');
             const fileExtension = document.createElement('li');
             const fileSize = document.createElement('li');
             let fileGeoLocation = document.createElement('li');
@@ -18,8 +27,7 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
 
         //Update DOM elements with data
         image.src = URL.createObjectURL(fileObject);
-        imageMiniature.appendChild(image);
-        fileName.innerText = `File name: ${fileObject.name}`;
+        cardTitleSpan.innerText = `File name: ${fileObject.name}`;
         fileExtension.innerText = `File extension: ${fileObject.type}`;
         fileSize.innerText = `File size: ${fileObject.size}`;
         removeButton.innerText = 'remove item';
@@ -32,14 +40,18 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
         }
 
         //Update the parent list
-        pictureInfoList.appendChild(imageMiniature);
-        pictureInfoList.appendChild(fileName);
-        pictureInfoList.appendChild(fileExtension);
-        pictureInfoList.appendChild(fileSize);
-        pictureInfoList.appendChild(fileGeoLocation);
-        pictureInfoList.appendChild(removeButton);
+                    cardImageDiv.appendChild(image); 
+                    cardImageDiv.appendChild(cardTitleSpan);
+                pictureInfoList.appendChild(cardImageDiv);
+                pictureInfoList.appendChild(fileExtension);
+                pictureInfoList.appendChild(fileSize);
+                pictureInfoList.appendChild(fileGeoLocation);
+                pictureInfoList.appendChild(removeButton);
+            cardContent.appendChild(pictureInfoList);
+        cardDiv.appendChild(cardImageDiv)
+        cardDiv.appendChild(cardContent)
 
-        return pictureInfoList;
+        return cardDiv;
     }
 
     function imageUploadHandler(fileInput, outputContainer){
@@ -63,7 +75,7 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
     function removeImageHandler(imagesContainer){
         imagesContainer.addEventListener('click', function(event){
             if(event.target.className === "btn-remove"){
-                event.target.parentElement.remove()
+                event.target.parentElement.parentElement.parentElement.remove()
             }
         })
     }
