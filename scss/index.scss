@@ -1,3 +1,9 @@
-// input {
-//     border: none;
-// }
+// Javascript element styling
+.alert {
+    background-color: #E57373;
+
+    .error-text{
+        color: #fff;
+        padding: 1rem;
+    }
+}

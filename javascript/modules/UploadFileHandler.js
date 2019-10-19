@@ -42,6 +42,7 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
         removeButton.innerText = 'remove item';
             removeButton.classList.add('btn-remove');
             removeButton.classList.add('btn');
+            removeButton.classList.add('red');
         
         image.onload = function(){
             ImageGeolocationHandler.returnLongLat(image, function(longLat){
@@ -77,7 +78,7 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
                         //Create single uploaded image and add metadata  
                         outputContainer.appendChild(singleImageTemplate(file));
                     } else {
-                        AlertHandler.displayError(errors, document.querySelector('body'), 3000)
+                        AlertHandler.displayError(errors, document.querySelector('.container'), 6000)
                     }
                 })
             })
