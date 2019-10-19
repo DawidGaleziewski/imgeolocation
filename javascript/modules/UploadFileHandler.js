@@ -1,6 +1,7 @@
 //Modeule handling image upload and getting all information
 import ImageGeolocationHandler from './ImageGeolocationHandler';
 import ValidateHandler from './ValidateHandler';
+import AlertHandler from './AlertHandler';
 
 const UploadFileHandler = (function(ImageGeolocationHandler){
     
@@ -46,9 +47,15 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
         fileInput.addEventListener('change', function(event){
             const fileInput = Array.from(event.target.files); 
             fileInput.forEach(function(file){
-                ValidateHandler.validateGPSData(file)
-                //Create single uploaded image and add metadata  
-                outputContainer.appendChild(singleImageTemplate(file));
+                ValidateHandler.validateImage(file, function(errors){
+                    console.log(errors)
+                    if(errors.hasGPSData && errors.goodFileSize && errors.validFileExtension){
+                        //Create single uploaded image and add metadata  
+                        outputContainer.appendChild(singleImageTemplate(file));
+                    } else {
+                        console.log('not all good')
+                    }
+                })
             })
         })
     }

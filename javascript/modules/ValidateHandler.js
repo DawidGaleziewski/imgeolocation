@@ -1,37 +1,42 @@
 
 const ValidateHandler = (function(){
 
-    const validateGPSData = function(image){
-        let hasGPSdata = 'test';
-        //Todo Figuring out how to validate if image has the data
-        function fetchEXIF(image, callback){
-            EXIF.getData(image, function(){
-                let valid = EXIF.getTag(this, 'GPSLongitude') ? true : false;
-                callback(valid);
-            }) 
-        }
-
-        fetchEXIF(image, function(valid){
-            //console.log(valid)
-            console.log(hasGPSdata)
-            hasGPSdata = valid;
-        })
-
-        console.log(hasGPSdata)
+    const _validateGPSData = function(image, callback){
+        EXIF.getData(image, function(){
+            let valid = EXIF.getTag(this, 'GPSLongitude') ? true : false; 
+            callback(valid);
+        }) 
     }
 
-    const validateFileSize = function(fileSizeKB,fileSizeLimitKB){
-        return (fileSizeKB > fileSizeLimitKB)
+    const _validateFileSize = function(fileSize,fileSizeLimitKB){
+        const fileSizeKB = fileSize/1000;
+        return (fileSizeKB <= fileSizeLimitKB)
     }
 
-    const validateFileExtension = function(fileExtension,acceptableFileExtensionsArray){
+    const _validateFileExtension = function(fileExtension,acceptableFileExtensionsArray){
         return (acceptableFileExtensionsArray.includes(fileExtension))
     }
 
+    //Validate image and return a object with checks in the callback
+    const validateImage = function(image, callback){
+        const errors = {
+            hasGPSData:  false,
+            goodFileSize: false,
+            validFileExtension: false
+        }
+
+        _validateGPSData(image, function(gpsIsValid){
+            errors.hasGPSData = gpsIsValid;
+            errors.goodFileSize = _validateFileSize(image.size, 1000);
+            errors.validFileExtension = _validateFileExtension(image.type, ["image/jpeg"])
+            callback(errors)
+        })
+
+
+    }
+
     return{
-        validateFileSize: validateFileSize,
-        validateFileExtension: validateFileExtension,
-        validateGPSData: validateGPSData
+        validateImage: validateImage
     }
 })();
 
