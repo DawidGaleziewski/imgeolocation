@@ -47,3 +47,8 @@ https://materializecss.com/
 -Application is written in pure javaScript
 -The project uses module pattern (IIFE exports), due to this fact functions are written in es5 and not es6 standard.
 -Still, some es6 are used due to their benefit to the code i.e const
+
+
+
+
+#JavAscript modules structure:

@@ -1,6 +1,15 @@
+//###6. MapHandler.js
+    //- module handling the map api and actions like: adding markers, removing markers. changing current view
+        //#functions
+            //- startMap - creates MAP object and binds it to the DOM.
+            //- setView - changes the location the map is focused on. Accepts object with longitude and latitude
+            //- addMarker - adds marker on the map. Accepts object with longitude and latitude.
+            //- _removeMarker - removes marker on the map. Private function
+            //- removeButtonOnClickHandler - collects data needed to locate object referance of a marker and remove it from dom
+            
 
-//Maps
 
+    
 const MapHandler = (function(){
     var _mymap = L.map('mapid').setView([51.505, -0.09], 13);
     function startMap(){
@@ -31,7 +40,7 @@ const MapHandler = (function(){
         )   
     }
 
-    function removeMarker(longLatObject){
+    function _removeMarker(longLatObject){
         markersArray.forEach(function(marker, index){
             console.log(marker.longitude, longLatObject.longitude)
             if (marker.longitude === longLatObject.longitude){
@@ -55,7 +64,7 @@ const MapHandler = (function(){
             latitude: parseFloat(longLatRaw[2])
         };
 
-        removeMarker(longLatObj)
+        _removeMarker(longLatObj)
     }
 
 
@@ -63,7 +72,6 @@ const MapHandler = (function(){
         startMap: startMap,
         setMarker: addMarker,
         setView: setView,
-        removeMarker: removeMarker,
         removeButtonOnClickHandler: removeButtonOnClickHandler
     }
 })();

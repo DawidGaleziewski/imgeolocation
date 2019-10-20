@@ -1,6 +1,17 @@
+//###5. ValidateHandler.js
+    //- module handling validation criteria: file size, file format, required EXIF data
+        //#functions:
+            //validateImage - public function bootstraping all other validation functions. Returns public error object
+            //_validateGPSData validates if the image has correct metadata. - private function
+                //requires a callback due to async nature of the function
+            //_validateFileSize - validates file size
+            //_validateFileExtension - validates if the file has correct format - private function
 
+
+
+
+    
 const ValidateHandler = (function(){
-
     const _validateGPSData = function(image, callback){
         EXIF.getData(image, function(){
             let valid = EXIF.getTag(this, 'GPSLongitude') ? true : false; 
