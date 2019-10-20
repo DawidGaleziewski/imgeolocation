@@ -1,3 +1,10 @@
+
+
+
+#App purpose
+Application purpose is to show geolocation of uploaded files using EXIF metadata.
+
+
 #Developer environment setup
 
 ##clone repository and run:

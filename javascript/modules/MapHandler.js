@@ -17,23 +17,54 @@ const MapHandler = (function(){
         _mymap.panTo(new L.LatLng(longLatObject.latitude, longLatObject.longitude));
     }
 
+    var markersArray = [];
+    function addMarker(longLatObject, fileName){ 
 
-    function addMarker(longLatObject){
-        var planes = [];
-            planes.push([`Location-${longLatObject.latitude}-${longLatObject.longitude}`, longLatObject.latitude ,longLatObject.longitude])
-
-            for (var i = 0; i < planes.length; i++) {
-                var marker = new L.marker([planes[i][1],planes[i][2]])
-                    .bindPopup(planes[i][0])
-                    .addTo(_mymap);
+        markersArray.push(
+            {
+                latitude: longLatObject.latitude ,
+                longitude: longLatObject.longitude,
+                objectReference: new L.marker([longLatObject.latitude ,longLatObject.longitude])
+                .bindPopup(`Picture name: ${fileName}`)
+                .addTo(_mymap)
             }
+        )   
+    }
+
+    function removeMarker(longLatObject){
+        markersArray.forEach(function(marker, index){
+            console.log(marker.longitude, longLatObject.longitude)
+            if (marker.longitude === longLatObject.longitude){
+                
+                //Remove marker from the map using the object referance
+                _mymap.removeLayer(marker.objectReference);
+
+                //Remove marker from the array
+                markersArray.splice(index, 1)
+
+                console.log('bang', markersArray)
+            }
+        })
+    }
+
+    function removeButtonOnClickHandler(UIremoveButton){
+        //Covert the data stored in button dom to object
+        const longLatRaw = UIremoveButton.getAttribute('name').split('#');
+        const longLatObj = {
+            longitude: parseFloat(longLatRaw[1]),
+            latitude: parseFloat(longLatRaw[2])
+        };
+
+        removeMarker(longLatObj)
     }
 
 
     return {
         startMap: startMap,
         setMarker: addMarker,
-        setView: setView
+        setView: setView,
+        removeMarker: removeMarker,
+        removeButtonOnClickHandler: removeButtonOnClickHandler
     }
 })();
 
