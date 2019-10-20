@@ -12,19 +12,20 @@ const MapHandler = (function(){
     
     }
 
-    function setView(){
-        _mymap.setView([55.505, -0.09], 13);
+    function setView(longLatObject){
+        _mymap.panTo(new L.LatLng(longLatObject.longitude,longLatObject.latitude));
     }
 
-    //TODO work on markers and documentation
-        //TODO refactor code
-    function setMarker(){
-        var planes = [[51.5, -0.09], [53.51, -0.09], [53.53, -0.09]]
-       planes.forEach(function(planeMarker){
-           console.log(planeMarker)
-        var marker = new L.marker([planeMarker[0], planeMarker[1]]).addTo(_mymap);
-       }) 
-        // var marker1 = L.marker([55.51, -0.09], [55.51, -0.09]).addTo(_mymap);
+
+    function setMarker(longLatObject){
+        var planes = [];
+            planes.push([`Location-${longLatObject.longitude}-${longLatObject.latitude}`,longLatObject.longitude, longLatObject.latitude])
+
+            for (var i = 0; i < planes.length; i++) {
+                var marker = new L.marker([planes[i][1],planes[i][2]])
+                    .bindPopup(planes[i][0])
+                    .addTo(_mymap);
+            }
     }
 
 
