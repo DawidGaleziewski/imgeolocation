@@ -2,6 +2,7 @@
 import ImageGeolocationHandler from './ImageGeolocationHandler';
 import ValidateHandler from './ValidateHandler';
 import AlertHandler from './AlertHandler';
+import MapHandler from './MapHandler';
 
 const UploadFileHandler = (function(ImageGeolocationHandler){
     
@@ -47,6 +48,8 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
         image.onload = function(){
             ImageGeolocationHandler.returnLongLat(image, function(longLat){
                 fileGeoLocation.innerText = `Picture was taken on long/lat: ${longLat.longitude}, ${longLat.latitude}`;
+                MapHandler.setView(longLat);
+                MapHandler.setMarker(longLat);
             })
         }
 
@@ -77,6 +80,9 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
                     if(errors.hasGPSData.isCorrect && errors.goodFileSize.isCorrect && errors.validFileExtension.isCorrect){
                         //Create single uploaded image and add metadata  
                         outputContainer.appendChild(singleImageTemplate(file));
+                        //Add marker to map
+
+
                     } else {
                         AlertHandler.displayError(errors, document.querySelector('.container'), 6000)
                     }

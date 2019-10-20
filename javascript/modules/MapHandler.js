@@ -1,3 +1,4 @@
+
 //Maps
 
 const MapHandler = (function(){
@@ -13,13 +14,13 @@ const MapHandler = (function(){
     }
 
     function setView(longLatObject){
-        _mymap.panTo(new L.LatLng(longLatObject.longitude,longLatObject.latitude));
+        _mymap.panTo(new L.LatLng(longLatObject.latitude, longLatObject.longitude));
     }
 
 
-    function setMarker(longLatObject){
+    function addMarker(longLatObject){
         var planes = [];
-            planes.push([`Location-${longLatObject.longitude}-${longLatObject.latitude}`,longLatObject.longitude, longLatObject.latitude])
+            planes.push([`Location-${longLatObject.latitude}-${longLatObject.longitude}`, longLatObject.latitude ,longLatObject.longitude])
 
             for (var i = 0; i < planes.length; i++) {
                 var marker = new L.marker([planes[i][1],planes[i][2]])
@@ -31,7 +32,7 @@ const MapHandler = (function(){
 
     return {
         startMap: startMap,
-        setMarker: setMarker,
+        setMarker: addMarker,
         setView: setView
     }
 })();
