@@ -32,7 +32,7 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
         const fileSize = document.createElement('li');
             fileSize.classList.add('collection-item')
         let fileGeoLocation = document.createElement('li');
-            fileGeoLocation.classList.add('collection-item')
+            fileGeoLocation.classList.add('collection-item');
         const removeButton = document.createElement('li');
 
         //Update DOM elements with data
@@ -49,8 +49,12 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
             ImageGeolocationHandler.returnLongLat(image, function(longLat){
                 fileGeoLocation.innerText = `Picture was taken on long/lat: ${longLat.longitude}, ${longLat.latitude}`;
                 MapHandler.setView(longLat);
-                MapHandler.setMarker(longLat);
-            })
+                MapHandler.setMarker(longLat, fileObject.name);   
+                
+                //Adding data to button for easy removal of the object on map
+                removeButton.setAttribute('name', `longlat#${longLat.longitude}#${longLat.latitude}`);
+            });
+
         }
 
         //Update the parent list
@@ -76,7 +80,7 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
             const fileInput = Array.from(event.target.files); 
             fileInput.forEach(function(file){
                 ValidateHandler.validateImage(file, function(errors){
-                    console.log(errors)
+                    // console.log(errors)
                     if(errors.hasGPSData.isCorrect && errors.goodFileSize.isCorrect && errors.validFileExtension.isCorrect){
                         //Create single uploaded image and add metadata  
                         outputContainer.appendChild(singleImageTemplate(file));
@@ -94,7 +98,13 @@ const UploadFileHandler = (function(ImageGeolocationHandler){
     function removeImageHandler(imagesContainer){
         imagesContainer.addEventListener('click', function(event){
             if(event.target.classList.contains("btn-remove")){
-                event.target.parentElement.parentElement.parentElement.remove()
+                const card = event.target.parentElement.parentElement.parentElement;
+
+                //Remove marker from map
+                MapHandler.removeButtonOnClickHandler(event.target);
+
+                //Remove picture card from DOM
+                card.remove();
             }
         })
     }
