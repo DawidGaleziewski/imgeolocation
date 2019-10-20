@@ -35,7 +35,7 @@ function style(){
         .pipe(cleanCSS())
     .pipe(sourcemaps.write())
     // 4. Where do I save the complied CSS?
-    .pipe(gulp.dest('css'))
+    .pipe(gulp.dest('app/css/'))
     // 5. Stream changes to all browsers
     .pipe(browserSync.stream())
 }
@@ -43,7 +43,7 @@ function style(){
 function javascript(done){
     const jsFolder = './javascript/';
     const index = 'index.js';
-    const jsDIST = './';
+    const jsDIST = './app/javascript/';
     const jsFILES = [index];
 
 
@@ -75,7 +75,7 @@ function watch(){
     browserSync.init({
         server: {
             // server directory
-            baseDir:'./'
+            baseDir:'./app'
         }
     });
 
