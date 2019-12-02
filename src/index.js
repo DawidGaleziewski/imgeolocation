@@ -2,6 +2,8 @@
 // console.log(L);
 import './scss/index.scss';
 
+require('leaflet-css');
+
 // ###1. index.js
 // - main app entry file ###
 

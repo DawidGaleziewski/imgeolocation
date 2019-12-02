@@ -6,12 +6,34 @@
 // - addMarker - adds marker on the map. Accepts object with longitude and latitude.
 // - _removeMarker - removes marker on the map. Private function
 // - removeButtonOnClickHandler - collects data needed to locate object referance of a marker and remove it from dom
-const Leflet = require('leaflet');
+import { icon, Marker } from 'leaflet';
+
+const Leaflet = require('leaflet');
+
+console.log(Leaflet);
+
+const assetsPath = '../../assets/markers';
+const iconRetinaUrl = `${assetsPath}/marker-icon-2x.png`;
+const iconUrl = `${assetsPath}/marker-icon.png`;
+const shadowUrl = `${assetsPath}/marker-shadow.png`;
+const iconDefault = icon({
+  iconRetinaUrl,
+  iconUrl,
+  shadowUrl,
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  tooltipAnchor: [16, -28],
+  shadowSize: [41, 41]
+});
+
+// console.log(Marker);
+Marker.prototype.options.icon = iconDefault;
 
 const MapHandler = (() => {
-  const mymap = Leflet.map('mapid').setView([51.505, -0.09], 13);
+  const mymap = Leaflet.map('mapid').setView([51.505, -0.09], 13);
   function startMap() {
-    Leflet.tileLayer(
+    Leaflet.tileLayer(
       'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
       {
         attribution:
@@ -25,7 +47,7 @@ const MapHandler = (() => {
   }
 
   function setView(longLatObject) {
-    mymap.panTo(new Leflet.LatLng(longLatObject.latitude, longLatObject.longitude));
+    mymap.panTo(new Leaflet.LatLng(longLatObject.latitude, longLatObject.longitude));
   }
 
   const markersArray = [];
@@ -33,7 +55,7 @@ const MapHandler = (() => {
     markersArray.push({
       latitude: longLatObject.latitude,
       longitude: longLatObject.longitude,
-      objectReference: new Leflet.marker([longLatObject.latitude, longLatObject.longitude])
+      objectReference: new Leaflet.marker([longLatObject.latitude, longLatObject.longitude])
         .bindPopup(`Picture name: ${fileName}`)
         .addTo(mymap)
     });
