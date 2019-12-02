@@ -47,7 +47,7 @@ const ValidateHandler = (function() {
     _validateGPSData(image, function(gpsIsValid) {
       errors.hasGPSData.isCorrect = gpsIsValid;
       errors.goodFileSize.isCorrect = validateFileSize(image.size, 1000);
-      errors.validFileExtension.isCorrect = _validateFileExtension(image.type, [
+      errors.validFileExtension.isCorrect = validateFileExtension(image.type, [
         'image/jpeg'
       ]);
       callback(errors);
