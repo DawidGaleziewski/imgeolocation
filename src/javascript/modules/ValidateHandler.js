@@ -7,13 +7,12 @@
 // requires a callback due to async nature of the function
 // _validateFileSize - validates file size
 // _validateFileExtension - validates if the file has correct format - private function
-
 const EXIF = require('exif-js');
 
 const ValidateHandler = (() => {
   const validateGPSData = (image, callback) => {
     EXIF.getData(image, () => {
-      const valid = EXIF.getTag(image, 'GPSLongitude') ? true : false;
+      const valid = EXIF.getTag(image, 'GPSLongitude') !== undefined;
       callback(valid);
     });
   };

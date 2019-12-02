@@ -10,12 +10,12 @@ import AlertHandler from './AlertHandler';
 import MapHandler from './MapHandler';
 import DOMTemplateHandler from './DOMTemplateHandler';
 
-const UploadFileHandler = (ImageGeolocationHandler => {
-  function imageUploadHandler(fileInput, outputContainer) {
+const UploadFileHandler = (() => {
+  const imageUploadHandler = (fileInput, outputContainer) => {
     // Add on change event handler to upload image to website
     fileInput.addEventListener('change', event => {
-      const fileInput = Array.from(event.target.files);
-      fileInput.forEach(file => {
+      const uploadedFiles = Array.from(event.target.files);
+      uploadedFiles.forEach(file => {
         ValidateHandler.validateImage(file, errors => {
           if (
             errors.hasGPSData.isCorrect &&
@@ -31,7 +31,7 @@ const UploadFileHandler = (ImageGeolocationHandler => {
         });
       });
     });
-  }
+  };
 
   const removeImageHandler = imagesContainer => {
     imagesContainer.addEventListener('click', event => {
