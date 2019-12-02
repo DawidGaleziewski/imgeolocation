@@ -1,3 +1,6 @@
+// Styles
+import './scss/index.scss';
+
 //###1. index.js
 //- main app entry file ###
 
@@ -20,8 +23,8 @@
 //Responsible for creating html elements/nodes in js, adding classes to them etc
 
 //## Imports ##
-import UploadFileHandler from './modules/UploadFileHandler';
-import MapHandler from './modules/MapHandler';
+import UploadFileHandler from './javascript/modules/UploadFileHandler';
+import MapHandler from './javascript/modules/MapHandler';
 
 //## Global variables
 const UIinput = document.querySelector('#upload-file__image');
