@@ -8,25 +8,27 @@
 // _validateFileSize - validates file size
 // _validateFileExtension - validates if the file has correct format - private function
 
+const EXIF = require('exif-js');
+
 const ValidateHandler = (() => {
   const validateGPSData = (image, callback) => {
-    EXIF.getData(image, function() {
-      let valid = EXIF.getTag(this, 'GPSLongitude') ? true : false;
+    EXIF.getData(image, () => {
+      const valid = EXIF.getTag(image, 'GPSLongitude') ? true : false;
       callback(valid);
     });
   };
 
-  const validateFileSize = function(fileSize, fileSizeLimitKB) {
+  const validateFileSize = (fileSize, fileSizeLimitKB) => {
     const fileSizeKB = fileSize / 1000;
     return fileSizeKB <= fileSizeLimitKB;
   };
 
-  const validateFileExtension = function(fileExtension, acceptableFileExtensionsArray) {
+  const validateFileExtension = (fileExtension, acceptableFileExtensionsArray) => {
     return acceptableFileExtensionsArray.includes(fileExtension);
   };
 
   // Validate image and return a object with checks in the callback
-  const validateImage = function(image, callback) {
+  const validateImage = (image, callback) => {
     const errors = {
       hasGPSData: {
         isCorrect: false,
@@ -42,7 +44,7 @@ const ValidateHandler = (() => {
       }
     };
 
-    validateGPSData(image, function(gpsIsValid) {
+    validateGPSData(image, gpsIsValid => {
       errors.hasGPSData.isCorrect = gpsIsValid;
       errors.goodFileSize.isCorrect = validateFileSize(image.size, 1000);
       errors.validFileExtension.isCorrect = validateFileExtension(image.type, ['image/jpeg']);

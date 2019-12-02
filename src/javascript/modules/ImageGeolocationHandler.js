@@ -5,6 +5,8 @@
 // -returnLongLat - returning longitude and latitude from api in object format.
 // -operations need to be done in callback function due to async nature of EXIF api.
 
+const EXIF = require('exif-js');
+
 const ImageGeolocationHandler = (() => {
   // Helper function returning longitude and latitude as a float
   const toDecimal = number => {
