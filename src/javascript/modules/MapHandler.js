@@ -1,14 +1,14 @@
-//###6. MapHandler.js
-//- module handling the map api and actions like: adding markers, removing markers. changing current view
-//#functions
-//- startMap - creates MAP object and binds it to the DOM.
-//- setView - changes the location the map is focused on. Accepts object with longitude and latitude
-//- addMarker - adds marker on the map. Accepts object with longitude and latitude.
-//- _removeMarker - removes marker on the map. Private function
-//- removeButtonOnClickHandler - collects data needed to locate object referance of a marker and remove it from dom
+// ###6. MapHandler.js
+// - module handling the map api and actions like: adding markers, removing markers. changing current view
+// #functions
+// - startMap - creates MAP object and binds it to the DOM.
+// - setView - changes the location the map is focused on. Accepts object with longitude and latitude
+// - addMarker - adds marker on the map. Accepts object with longitude and latitude.
+// - _removeMarker - removes marker on the map. Private function
+// - removeButtonOnClickHandler - collects data needed to locate object referance of a marker and remove it from dom
 
-const MapHandler = (function() {
-  var _mymap = L.map('mapid').setView([51.505, -0.09], 13);
+const MapHandler = (() => {
+  const mymap = L.map('mapid').setView([51.505, -0.09], 13);
   function startMap() {
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
       attribution:
@@ -17,32 +17,32 @@ const MapHandler = (function() {
       id: 'mapbox.streets',
       accessToken:
         'pk.eyJ1IjoiZGF3aWRnYWxlemlld3NraWRldiIsImEiOiJjazF5MmtrenUwY21mM29uc3R2NWY2eG80In0.tnl8PPwx5p-xDKirHF6O2Q'
-    }).addTo(_mymap);
+    }).addTo(mymap);
   }
 
   function setView(longLatObject) {
-    _mymap.panTo(new L.LatLng(longLatObject.latitude, longLatObject.longitude));
+    mymap.panTo(new L.LatLng(longLatObject.latitude, longLatObject.longitude));
   }
 
-  var markersArray = [];
+  const markersArray = [];
   function addMarker(longLatObject, fileName) {
     markersArray.push({
       latitude: longLatObject.latitude,
       longitude: longLatObject.longitude,
       objectReference: new L.marker([longLatObject.latitude, longLatObject.longitude])
         .bindPopup(`Picture name: ${fileName}`)
-        .addTo(_mymap)
+        .addTo(mymap)
     });
   }
 
-  function _removeMarker(longLatObject) {
-    markersArray.forEach(function(marker, index) {
+  function removeMarker(longLatObject) {
+    markersArray.forEach((marker, index) => {
       console.log(marker.longitude, longLatObject.longitude);
       if (marker.longitude === longLatObject.longitude) {
-        //Remove marker from the map using the object referance
-        _mymap.removeLayer(marker.objectReference);
+        // Remove marker from the map using the object referance
+        mymap.removeLayer(marker.objectReference);
 
-        //Remove marker from the array
+        // Remove marker from the array
         markersArray.splice(index, 1);
 
         console.log('bang', markersArray);
@@ -51,21 +51,21 @@ const MapHandler = (function() {
   }
 
   function removeButtonOnClickHandler(UIremoveButton) {
-    //Covert the data stored in button dom to object
+    // Covert the data stored in button dom to object
     const longLatRaw = UIremoveButton.getAttribute('name').split('#');
     const longLatObj = {
       longitude: parseFloat(longLatRaw[1]),
       latitude: parseFloat(longLatRaw[2])
     };
 
-    _removeMarker(longLatObj);
+    removeMarker(longLatObj);
   }
 
   return {
-    startMap: startMap,
     setMarker: addMarker,
-    setView: setView,
-    removeButtonOnClickHandler: removeButtonOnClickHandler
+    startMap,
+    setView,
+    removeButtonOnClickHandler
   };
 })();
 

@@ -1,13 +1,13 @@
 // ###3. ImageGeolocationHandler
 // -module handling EXIF api returning longitude and latitude information.
 // #functions
-// -_toDecimal - helper with changing array returned by EXIF.js api into decimal value - private function
+// -toDecimal - helper with changing array returned by EXIF.js api into decimal value - private function
 // -returnLongLat - returning longitude and latitude from api in object format.
 // -operations need to be done in callback function due to async nature of EXIF api.
 
-const ImageGeolocationHandler = (function() {
+const ImageGeolocationHandler = (() => {
   // Helper function returning longitude and latitude as a float
-  const _toDecimal = function(number) {
+  const toDecimal = number => {
     return (
       number[0].numerator +
       number[1].numerator / (60 * number[1].denominator) +
@@ -17,9 +17,9 @@ const ImageGeolocationHandler = (function() {
 
   function returnLongLat(imgHTMLElement, callback) {
     // function accepting the image and callback returning the data
-    EXIF.getData(imgHTMLElement, function() {
-      let longitude = _toDecimal(EXIF.getTag(this, 'GPSLongitude'));
-      let latitude = _toDecimal(EXIF.getTag(this, 'GPSLatitude'));
+    EXIF.getData(imgHTMLElement, () => {
+      const longitude = toDecimal(EXIF.getTag(imgHTMLElement, 'GPSLongitude'));
+      const latitude = toDecimal(EXIF.getTag(imgHTMLElement, 'GPSLatitude'));
 
       const longLat = {
         longitude,

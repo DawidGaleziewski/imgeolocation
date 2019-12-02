@@ -4,18 +4,18 @@
 // displayError - accepts errors object and shows them in the DOM.
 // -accepts duration of which error should be displayed.
 
-const AlertHandler = (function() {
+const AlertHandler = (() => {
   function displayError(errors, UIoutput, errorDurationTime) {
     // Convert errors to array of error messages
     const errorMessages = Object.keys(errors)
-      .filter(function(key) {
+      .filter(key => {
         return errors[key].isCorrect === false;
       })
-      .map(function(key) {
+      .map(key => {
         return errors[key].description;
       });
 
-    errorMessages.forEach(function(errorMessage) {
+    errorMessages.forEach(errorMessage => {
       const errorTemplate = document.createElement('div');
       errorTemplate.className = 'card alert';
       const errorText = document.createElement('span');
@@ -24,7 +24,7 @@ const AlertHandler = (function() {
       errorTemplate.appendChild(errorText);
 
       UIoutput.prepend(errorTemplate);
-      setTimeout(function() {
+      setTimeout(() => {
         UIoutput.removeChild(errorTemplate);
       }, errorDurationTime);
     });

@@ -3,13 +3,13 @@
 /** #functions: validateImage
  * public function bootstraping all other validation functions.
  * Returns public error object */
-// _validateGPSData validates if the image has correct metadata. - private function
+// validateGPSData validates if the image has correct metadata. - private function
 // requires a callback due to async nature of the function
 // _validateFileSize - validates file size
 // _validateFileExtension - validates if the file has correct format - private function
 
-const ValidateHandler = (function() {
-  const _validateGPSData = function(image, callback) {
+const ValidateHandler = (() => {
+  const validateGPSData = (image, callback) => {
     EXIF.getData(image, function() {
       let valid = EXIF.getTag(this, 'GPSLongitude') ? true : false;
       callback(valid);
@@ -25,7 +25,7 @@ const ValidateHandler = (function() {
     return acceptableFileExtensionsArray.includes(fileExtension);
   };
 
-  //Validate image and return a object with checks in the callback
+  // Validate image and return a object with checks in the callback
   const validateImage = function(image, callback) {
     const errors = {
       hasGPSData: {
@@ -42,7 +42,7 @@ const ValidateHandler = (function() {
       }
     };
 
-    _validateGPSData(image, function(gpsIsValid) {
+    validateGPSData(image, function(gpsIsValid) {
       errors.hasGPSData.isCorrect = gpsIsValid;
       errors.goodFileSize.isCorrect = validateFileSize(image.size, 1000);
       errors.validFileExtension.isCorrect = validateFileExtension(image.type, ['image/jpeg']);

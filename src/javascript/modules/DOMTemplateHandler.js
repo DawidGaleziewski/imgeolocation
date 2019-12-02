@@ -4,7 +4,7 @@
 import ImageGeolocationHandler from './ImageGeolocationHandler';
 import MapHandler from './MapHandler';
 
-const DOMTemplateHandler = (function() {
+const DOMTemplateHandler = (() => {
   function singleImageTemplate(fileObject) {
     // Materializecss DOM elements
     const sizeDiv = document.createElement('div');
@@ -30,7 +30,7 @@ const DOMTemplateHandler = (function() {
     fileExtension.classList.add('collection-item');
     const fileSize = document.createElement('li');
     fileSize.classList.add('collection-item');
-    let fileGeoLocation = document.createElement('li');
+    const fileGeoLocation = document.createElement('li');
     fileGeoLocation.classList.add('collection-item');
     const removeButton = document.createElement('li');
 
@@ -44,8 +44,8 @@ const DOMTemplateHandler = (function() {
     removeButton.classList.add('btn');
     removeButton.classList.add('red');
 
-    image.onload = function() {
-      ImageGeolocationHandler.returnLongLat(image, function(longLat) {
+    image.onload = () => {
+      ImageGeolocationHandler.returnLongLat(image, longLat => {
         fileGeoLocation.innerText = `Picture was taken on long/lat: ${longLat.longitude}, ${longLat.latitude}`;
         MapHandler.setView(longLat);
         MapHandler.setMarker(longLat, fileObject.name);
