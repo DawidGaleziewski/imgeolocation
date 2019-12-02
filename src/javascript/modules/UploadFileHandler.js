@@ -10,14 +10,13 @@ import AlertHandler from './AlertHandler';
 import MapHandler from './MapHandler';
 import DOMTemplateHandler from './DOMTemplateHandler';
 
-const UploadFileHandler = (function(ImageGeolocationHandler) {
+const UploadFileHandler = (ImageGeolocationHandler => {
   function imageUploadHandler(fileInput, outputContainer) {
     // Add on change event handler to upload image to website
-    fileInput.addEventListener('change', function(event) {
+    fileInput.addEventListener('change', event => {
       const fileInput = Array.from(event.target.files);
-      fileInput.forEach(function(file) {
-        ValidateHandler.validateImage(file, function(errors) {
-          // console.log(errors)
+      fileInput.forEach(file => {
+        ValidateHandler.validateImage(file, errors => {
           if (
             errors.hasGPSData.isCorrect &&
             errors.goodFileSize.isCorrect &&
@@ -34,8 +33,8 @@ const UploadFileHandler = (function(ImageGeolocationHandler) {
     });
   }
 
-  function removeImageHandler(imagesContainer) {
-    imagesContainer.addEventListener('click', function(event) {
+  const removeImageHandler = imagesContainer => {
+    imagesContainer.addEventListener('click', event => {
       if (event.target.classList.contains('btn-remove')) {
         const card = event.target.parentElement.parentElement.parentElement;
 
@@ -46,7 +45,7 @@ const UploadFileHandler = (function(ImageGeolocationHandler) {
         card.remove();
       }
     });
-  }
+  };
 
   return {
     uploadImage: imageUploadHandler,
