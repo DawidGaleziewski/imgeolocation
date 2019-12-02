@@ -10,17 +10,14 @@
 const MapHandler = (function() {
   var _mymap = L.map('mapid').setView([51.505, -0.09], 13);
   function startMap() {
-    L.tileLayer(
-      'https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}',
-      {
-        attribution:
-          'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-        maxZoom: 18,
-        id: 'mapbox.streets',
-        accessToken:
-          'pk.eyJ1IjoiZGF3aWRnYWxlemlld3NraWRldiIsImEiOiJjazF5MmtrenUwY21mM29uc3R2NWY2eG80In0.tnl8PPwx5p-xDKirHF6O2Q'
-      }
-    ).addTo(_mymap);
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+      attribution:
+        'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+      maxZoom: 18,
+      id: 'mapbox.streets',
+      accessToken:
+        'pk.eyJ1IjoiZGF3aWRnYWxlemlld3NraWRldiIsImEiOiJjazF5MmtrenUwY21mM29uc3R2NWY2eG80In0.tnl8PPwx5p-xDKirHF6O2Q'
+    }).addTo(_mymap);
   }
 
   function setView(longLatObject) {
@@ -32,10 +29,7 @@ const MapHandler = (function() {
     markersArray.push({
       latitude: longLatObject.latitude,
       longitude: longLatObject.longitude,
-      objectReference: new L.marker([
-        longLatObject.latitude,
-        longLatObject.longitude
-      ])
+      objectReference: new L.marker([longLatObject.latitude, longLatObject.longitude])
         .bindPopup(`Picture name: ${fileName}`)
         .addTo(_mymap)
     });

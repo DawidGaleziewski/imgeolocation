@@ -1,12 +1,12 @@
-//###4. AlertHandler.js
-//-module handling alert display in case of failed validation
-//#functions
-//displayError - accepts errors object and shows them in the DOM.
-//- accepts duration of which error should be displayed.
+// ###4. AlertHandler.js
+// -module handling alert display in case of failed validation
+// #functions
+// displayError - accepts errors object and shows them in the DOM.
+// -accepts duration of which error should be displayed.
 
 const AlertHandler = (function() {
   function displayError(errors, UIoutput, errorDurationTime) {
-    //Convert errors to array of error messages
+    // Convert errors to array of error messages
     const errorMessages = Object.keys(errors)
       .filter(function(key) {
         return errors[key].isCorrect === false;
@@ -31,7 +31,7 @@ const AlertHandler = (function() {
   }
 
   return {
-    displayError: displayError
+    displayError
   };
 })();
 

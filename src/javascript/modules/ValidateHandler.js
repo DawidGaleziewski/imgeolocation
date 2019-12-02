@@ -1,11 +1,12 @@
-//###5. ValidateHandler.js
-//- module handling validation criteria: file size, file format, required EXIF data
-//#functions:
-//validateImage - public function bootstraping all other validation functions. Returns public error object
-//_validateGPSData validates if the image has correct metadata. - private function
-//requires a callback due to async nature of the function
-//_validateFileSize - validates file size
-//_validateFileExtension - validates if the file has correct format - private function
+// ###5. ValidateHandler.js
+// - module handling validation criteria: file size, file format, required EXIF data
+/** #functions: validateImage
+ * public function bootstraping all other validation functions.
+ * Returns public error object */
+// _validateGPSData validates if the image has correct metadata. - private function
+// requires a callback due to async nature of the function
+// _validateFileSize - validates file size
+// _validateFileExtension - validates if the file has correct format - private function
 
 const ValidateHandler = (function() {
   const _validateGPSData = function(image, callback) {
@@ -20,10 +21,7 @@ const ValidateHandler = (function() {
     return fileSizeKB <= fileSizeLimitKB;
   };
 
-  const validateFileExtension = function(
-    fileExtension,
-    acceptableFileExtensionsArray
-  ) {
+  const validateFileExtension = function(fileExtension, acceptableFileExtensionsArray) {
     return acceptableFileExtensionsArray.includes(fileExtension);
   };
 
@@ -47,17 +45,15 @@ const ValidateHandler = (function() {
     _validateGPSData(image, function(gpsIsValid) {
       errors.hasGPSData.isCorrect = gpsIsValid;
       errors.goodFileSize.isCorrect = validateFileSize(image.size, 1000);
-      errors.validFileExtension.isCorrect = validateFileExtension(image.type, [
-        'image/jpeg'
-      ]);
+      errors.validFileExtension.isCorrect = validateFileExtension(image.type, ['image/jpeg']);
       callback(errors);
     });
   };
 
   return {
-    validateImage: validateImage,
-    validateFileSize: validateFileSize,
-    validateFileExtension: validateFileExtension
+    validateImage,
+    validateFileSize,
+    validateFileExtension
   };
 })();
 

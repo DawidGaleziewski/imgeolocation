@@ -1,12 +1,12 @@
-//###7. DOMTemplateHandler
-//Responsible for creating html elements/nodes in js, adding classes to them etc
+// ###7. DOMTemplateHandler
+// Responsible for creating html elements/nodes in js, adding classes to them etc
 
 import ImageGeolocationHandler from './ImageGeolocationHandler';
 import MapHandler from './MapHandler';
 
 const DOMTemplateHandler = (function() {
   function singleImageTemplate(fileObject) {
-    //Materializecss DOM elements
+    // Materializecss DOM elements
     const sizeDiv = document.createElement('div');
     sizeDiv.classList.add('col');
     sizeDiv.classList.add('m4');
@@ -22,7 +22,7 @@ const DOMTemplateHandler = (function() {
     const cardAction = document.createElement('div');
     cardAction.classList.add('card-action');
 
-    //Create DOM elements with data
+    // Create DOM elements with data
     const pictureInfoList = document.createElement('ul');
     pictureInfoList.classList.add('collection');
     const image = document.createElement('img');
@@ -34,7 +34,7 @@ const DOMTemplateHandler = (function() {
     fileGeoLocation.classList.add('collection-item');
     const removeButton = document.createElement('li');
 
-    //Update DOM elements with data
+    // Update DOM elements with data
     image.src = URL.createObjectURL(fileObject);
     cardTitleSpan.innerText = `File name: ${fileObject.name}`;
     fileExtension.innerText = `File extension: ${fileObject.type}`;
@@ -50,15 +50,12 @@ const DOMTemplateHandler = (function() {
         MapHandler.setView(longLat);
         MapHandler.setMarker(longLat, fileObject.name);
 
-        //Adding data to button for easy removal of the object on map
-        removeButton.setAttribute(
-          'name',
-          `longlat#${longLat.longitude}#${longLat.latitude}`
-        );
+        // Adding data to button for easy removal of the object on map
+        removeButton.setAttribute('name', `longlat#${longLat.longitude}#${longLat.latitude}`);
       });
     };
 
-    //Update the parent list
+    // Update the parent list
     cardImageDiv.appendChild(image);
     cardImageDiv.appendChild(cardTitleSpan);
     pictureInfoList.appendChild(cardImageDiv);
@@ -76,7 +73,7 @@ const DOMTemplateHandler = (function() {
   }
 
   return {
-    singleImageTemplate: singleImageTemplate
+    singleImageTemplate
   };
 })();
 
