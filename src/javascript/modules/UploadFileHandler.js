@@ -1,27 +1,26 @@
-// ###2. UploadFileHandler.js
-// - module handling file upload handling
-// #Functions
-// -imageUploadHandle -uploading file to the site
-// -removeImageHandler - removing image and metadata
-
 import ImageGeolocationHandler from './ImageGeolocationHandler';
 import ValidateHandler from './ValidateHandler';
 import AlertHandler from './AlertHandler';
 import MapHandler from './MapHandler';
 import DOMTemplateHandler from './DOMTemplateHandler';
 
+/**
+ * Handling adding images to app and removing those images
+ * @module UploadFileHandler
+ */
 const UploadFileHandler = (() => {
+  /**
+   * Takes care of uploading files to the app
+   * @param {Element} fileInput - input element used for uploading files
+   * @param {Element} outputContainer -container that will be injected with DOM elements containing image information
+   */
   const imageUploadHandler = (fileInput, outputContainer) => {
-    // Add on change event handler to upload image to website
     fileInput.addEventListener('change', event => {
       const uploadedFiles = Array.from(event.target.files);
       uploadedFiles.forEach(file => {
         ValidateHandler.validateImage(file, errors => {
-          if (
-            errors.hasGPSData.isCorrect &&
-            errors.goodFileSize.isCorrect &&
-            errors.validFileExtension.isCorrect
-          ) {
+          const { hasGPSData, goodFileSize, validFileExtension } = errors;
+          if (hasGPSData.isCorrect && goodFileSize.isCorrect && validFileExtension.isCorrect) {
             // Create single uploaded image and add metadata
             outputContainer.appendChild(DOMTemplateHandler.singleImageTemplate(file));
             // Add marker to map
@@ -33,10 +32,23 @@ const UploadFileHandler = (() => {
     });
   };
 
+  /**
+   * Removing images from DOM
+   * @param {Element} imagesContainer - container with image that will be deleted
+   * @returns void
+   */
   const removeImageHandler = imagesContainer => {
     imagesContainer.addEventListener('click', event => {
-      if (event.target.classList.contains('btn-remove')) {
-        const card = event.target.parentElement.parentElement.parentElement;
+      const {
+        target: { classList },
+        target: {
+          parentElement: {
+            parentElement: { parentElement }
+          }
+        }
+      } = event;
+      if (classList.contains('btn-remove')) {
+        const card = parentElement;
 
         // Remove marker from map
         MapHandler.removeButtonOnClickHandler(event.target);
@@ -54,3 +66,4 @@ const UploadFileHandler = (() => {
 })(ImageGeolocationHandler);
 
 export default UploadFileHandler;
+// module.exports = UploadFileHandler;
